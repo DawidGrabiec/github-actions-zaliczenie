@@ -16,10 +16,25 @@ jobs:
           mkdir build
           cp index.html build/
 
+      - name: Zapisanie artefaktu build
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-build
+          path: build/
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
+      - name: Pobranie artefaktu build
+        uses: actions/download-artifact@v4
+        with:
+          name: website-build
+          path: build/
+
       - name: Deploy
-        run: echo "Deploy do VPS zostanie wykonany w kolejnym kroku"
+        run: |
+          echo "Pliki przygotowane do wdrożenia:"
+          ls -la build/
+          echo "Deploy do VPS zostanie wykonany po skonfigurowaniu SSH"
